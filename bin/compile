@@ -10,12 +10,14 @@ TEMPLATE_FOOTER="</body></html>"
 
 cd $1
 
-for f in *.md
+for file in *.md
 do
-  echo -n "       Sending $f to GitHub for rendering..."
-  HTML=$(curl --data-binary @$f -H "Content-Type:text/plain" -s https://api.github.com/markdown/raw)
-  echo $TEMPLATE_HEADER >> echo "$HTML" >> echo $TEMPLATE_FOOTER > $f.html
-  rename s/.md// $f.html
-  rm $f
+  file=`readlink --no-newline --canonicalize $file`
+
+  echo -n "       Sending $file to GitHub for rendering..."
+  HTML=$(curl --data-binary @$file -H "Content-Type:text/plain" -s https://api.github.com/markdown/raw)
+  echo $TEMPLATE_HEADER >> echo "$HTML" >> echo $TEMPLATE_FOOTER > $file.html
+  rename s/.md// $file.html
+  rm $file
   echo "done"
 done
