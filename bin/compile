@@ -20,12 +20,12 @@ do
   file_basename=$(basename $file)
   file_basename="${file_basename%.*}"
 
-  echo -n "       Sending $file_basename to GitHub for rendering"
+  echo -n "       Sending $file_basename to GitHub for rendering\n"
   html=$(curl --data-binary @$original_file -H "Content-Type:text/plain" -s https://api.github.com/markdown/raw)
   echo $template_header >> echo "$html" >> echo $template_footer > $file_basename.html
 
-  echo -n "       Removing original $file"
-  rm $file
+  # echo -n "       Removing original $file\n"
+  # rm $file
 
-  echo "done"
+  echo -n "done"
 done
